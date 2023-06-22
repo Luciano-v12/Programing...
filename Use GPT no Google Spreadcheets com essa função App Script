@@ -1,0 +1,25 @@
+gpt.js
+const SECRET_KEY = "YOUR API KEY";
+const MAX_TOKENS = 3000;
+const TEMPERATURE = 0.9;
+
+function EMAILALUNO(aluno, nota) {
+  const url = "https://api.openai.com/v1/chat/completions";
+  const payload = {
+    model: 'gpt-3.5-turbo',
+    messages: [
+      { role: "system", content: "Crie um parágrafo de incentivo para um aluno que recebeu uma nota na prova. Vou passar o nome do aluno e a nota." },
+      { role: "user", content: "Aluno: " + aluno + '. Nota: ' + nota },
+    ],
+    temperature: TEMPERATURE,
+    max_tokens: MAX_TOKENS,
+  };
+  const options = {
+    contentType: "application/json",
+    headers: { Authorization: "Bearer " + SECRET_KEY },
+    payload: JSON.stringify(payload),
+    timeoutInSeconds: 60
+  };
+  const res = JSON.parse(UrlFetchApp.fetch(url, options).getContentText());
+  return res.choices[0].message.content.trim();
+}
